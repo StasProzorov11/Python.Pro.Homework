@@ -19,8 +19,10 @@ app.add_middleware(
 
 cached_data = {"data": None, "timestamp": 0}
 
+
 def create_random_string(size: int) -> str:
     return "".join([random.choice(string.ascii_letters) for _ in range(size)])
+
 
 @app.post("/fetch-market")
 async def get_current_market_state(from_currency: str, to_currency: str):
@@ -30,7 +32,7 @@ async def get_current_market_state(from_currency: str, to_currency: str):
         return cached_data["data"]
 
     url = f"https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency={from_currency}&to_currency={to_currency}&apikey=V2V43QAQ8RILGBOW"
-    
+
     async with httpx.AsyncClient() as client:
         response = await client.get(url)
         data = response.json()
